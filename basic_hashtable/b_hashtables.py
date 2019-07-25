@@ -33,13 +33,14 @@ def hash(string, max):
 # If you are overwriting a value with a different key, print a warning.
 # '''
 def hash_table_insert(hash_table, key, value):
+    #create hash index and pair
+    index = hash(key, hash_table.capacity)
+    pair = Pair(key, value)
     #warning if already exists
-    if value in hash_table.storage:
+    if hash_table.storage[index] != None:
         print(f"Warning overwriting existing key for value: {value}")
         hash_table.length -= 1
     #add to hash_table
-    index = hash(key, hash_table.capacity)
-    pair = Pair(key, value)
     hash_table.storage[index] = pair
     #increase count
     hash_table.length += 1
