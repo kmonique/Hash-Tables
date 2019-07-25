@@ -1,5 +1,3 @@
-
-
 # '''
 # Basic hash table key/value pair
 # '''
@@ -7,7 +5,6 @@ class Pair:
     def __init__(self, key, value):
         self.key = key
         self.value = value
-
 
 # '''
 # Basic hash table
@@ -20,17 +17,14 @@ class BasicHashTable:
         self.storage = [None] * capacity
         self.length = 0
 
-
-
 # '''
 # Fill this in.
 # Research and implement the djb2 hash function
 # '''
 def hash(string, max):
     hash = 5381
-    for x in string:
-        hash = ((hash << 5) + hash) + ord(x)
-    print(hash % max)
+    for char in string:
+        hash = ((hash << 5) + hash) + ord(char)
     return hash % max
 
 # '''
@@ -47,8 +41,6 @@ def hash_table_insert(hash_table, key, value):
     index = hash(key, hash_table.capacity)
     pair = Pair(key, value)
     hash_table.storage[index] = pair
-    print(f"insert hash key{hash_table.storage[index].key}")
-    print(f"insert hash value{hash_table.storage[index].key}")
     #increase count
     hash_table.length += 1
 
@@ -67,7 +59,6 @@ def hash_table_remove(hash_table, key):
         #warning if not found
         print(f"index {index} not found")
 
-
 # '''
 # Fill this in.
 
@@ -75,35 +66,21 @@ def hash_table_remove(hash_table, key):
 # '''
 def hash_table_retrieve(hash_table, key):
     index = hash(key, hash_table.capacity)
-    print(f"retrieve hash key: {hash_table.storage[index]}")
-    if hash_table.storage[index - 1] == None:
-        print(f"failed")
+    if hash_table.storage[index] == None:
         return None
-    else:
-        print(f"retrieve hash key: {hash_table.storage[index].key}")
-        print(f"retrieve hash val: {hash_table.storage[index].value}")
-    return hash_table.storage[index - 1]
+    return hash_table.storage[index].value
 
 
 def Testing():
-    # ht = BasicHashTable(16)
+    ht = BasicHashTable(16)
 
-    # hash_table_insert(ht, "line", "Here today...\n")
+    hash_table_insert(ht, "line", "Here today...\n")
 
-    # hash_table_remove(ht, "line")
+    hash_table_remove(ht, "line")
 
-    # if hash_table_retrieve(ht, "line") is None:
-    #     print("...gone tomorrow (success!)")
-    # else:
-    #     print("ERROR:  STILL HERE")
-    ht = BasicHashTable(8)
-    hash_table_insert(ht, "key-0", "new-val-0")
-    return_value = hash_table_retrieve(ht, "key-0")
-    print(f"return val: {return_value}")
-    # if hash_table_retrieve(ht, "new-val-0") is None:
-    #     print("none")
-    # else:
-    #     print("True, value found")
-
+    if hash_table_retrieve(ht, "line") is None:
+        print("...gone tomorrow (success!)")
+    else:
+        print("ERROR:  STILL HERE")
 
 Testing()
