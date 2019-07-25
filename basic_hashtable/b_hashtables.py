@@ -15,7 +15,6 @@ class BasicHashTable:
         #takes in the size of the array and creates a memeory slot equal to the size of the array
         self.capacity = capacity
         self.storage = [None] * capacity
-        self.length = 0
 
 # '''
 # Fill this in.
@@ -39,11 +38,8 @@ def hash_table_insert(hash_table, key, value):
     #warning if already exists
     if hash_table.storage[index] != None:
         print(f"Warning overwriting existing key for value: {value}")
-        hash_table.length -= 1
     #add to hash_table
     hash_table.storage[index] = pair
-    #increase count
-    hash_table.length += 1
 
 # '''
 # Fill this in.
@@ -55,7 +51,6 @@ def hash_table_remove(hash_table, key):
     #if key/value is present set it to None
     if hash_table.storage[index] != None:
         hash_table.storage[index] = None
-        hash_table.length -= 1
     else:
         #warning if not found
         print(f"index {index} not found")
