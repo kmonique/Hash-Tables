@@ -1,5 +1,3 @@
-
-
 # '''
 # Linked List hash table key/value pair
 # '''
@@ -9,7 +7,6 @@ class LinkedPair:
         self.value = value
         self.next = None
 
-
 # '''
 # Fill this in
 
@@ -17,15 +14,18 @@ class LinkedPair:
 # '''
 class HashTable:
     def __init__(self, capacity):
-        pass
-
+        self.capacity = capacity
+        self.storage = [None] * capacity
+        self.count = 0
 
 # '''
 # Research and implement the djb2 hash function
 # '''
 def hash(string, max):
-    pass
-
+    hash = 5381
+    for char in string:
+        hash = ((hash << 5) + hash) + ord(char)
+    return hash % max
 
 # '''
 # Fill this in.
@@ -33,17 +33,45 @@ def hash(string, max):
 # Hint: Used the LL to handle collisions
 # '''
 def hash_table_insert(hash_table, key, value):
-    pass
+    hash_table_resize(hash_table)
+    index = hash(key, hash_table.capacity)
+    pair = hash_table.storage[index]
 
+    while pair is not None and pair.key != key: 
+        pair = pair.next
 
+    if pair is None:
+        new_pair = LinkedPair(key, value)
+        head = hash_table.storage[index]
+        hash_table.storage[index] = new_pair
+        new_pair.next = head
+    
+        if new_pair is None:
+            hash_table.count += 1
+
+    else:
+        pair = value
 # '''
 # Fill this in.
 
 # If you try to remove a value that isn't there, print a warning.
 # '''
 def hash_table_remove(hash_table, key):
-    pass
+    index = hash(key, hash_table.capacity)
+    pair = hash_table.storage[index]
+    pre_pair = None
 
+    if pair is not None:
+        while pair is not None and pair.key != key:
+            pre_pair = pair
+            pair = pair.next
+
+        if pre_pair is None and pair == key:
+            hash_table.storage[index] = None
+            hash_table.count -= 1
+        elif pair is None:
+            #warning if not found
+            print(f"index {index} not found")
 
 # '''
 # Fill this in.
@@ -51,14 +79,35 @@ def hash_table_remove(hash_table, key):
 # Should return None if the key is not found.
 # '''
 def hash_table_retrieve(hash_table, key):
-    pass
+    index = hash(key, hash_table.capacity)
+
+    pair = hash_table.storage[index]
+
+    if pair is not None:
+        while pair is not None and pair.key != key:
+            pair = pair.next
+        if pair is None:
+            return None
+        else:
+            return pair.value
+    else:
+        print(f"key {key} not found")
 
 
 # '''
 # Fill this in
 # '''
 def hash_table_resize(hash_table):
-    pass
+    new_table = HashTable(hash_table.capacity * 2)
+
+    for hash in range(hash_table.count):
+        pair = hash_table.storage[hash]
+
+        while pair is not None:
+            hash_table_insert(new_table, pair.key, pair.value)
+            pair = pair.next
+            
+    return new_table
 
 
 def Testing():
